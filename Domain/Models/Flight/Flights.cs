@@ -16,7 +16,7 @@ namespace Flight.Models
         public Airports Destiny { get; set; }
 
         [Required]
-        public AirCraft Plane { get; set; }
+        public Aircrafts Plane { get; set; }
 
         [Required]
         public int Sales { get; set; }

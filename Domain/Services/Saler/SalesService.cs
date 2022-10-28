@@ -27,13 +27,13 @@ namespace Saler.Services
             _sales.Find<Sales>(sales => true).ToList();
 
         public Sales Get(string fligthId, string cpf) =>
-            _sales.Find<Sales>(sales => sales.Flight.FlightId == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf))).FirstOrDefault();
+            _sales.Find<Sales>(sales => sales.Flight.Id == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf))).FirstOrDefault();
 
         public void Update(string fligthId, string cpf, Sales salesIn) =>
-            _sales.ReplaceOne(sales => sales.Flight.FlightId == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)), salesIn);
+            _sales.ReplaceOne(sales => sales.Flight.Id == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)), salesIn);
 
         public void Remove(string fligthId, string cpf) =>
-           _sales.DeleteOne(sales => sales.Flight.FlightId == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)));
+           _sales.DeleteOne(sales => sales.Flight.Id == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)));
     }
 }
 
