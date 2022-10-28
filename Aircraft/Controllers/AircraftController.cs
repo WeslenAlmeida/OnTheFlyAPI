@@ -1,11 +1,11 @@
-﻿using Aircraft.Models;
-using Aircraft.Services;
+﻿using DomainAPI.Models.Aircraft;
+using DomainAPI.Services.Aircraft;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OData.Edm;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Dtos.Aircraft;
+using DomainAPI.Dto.Aircraft;
 
 namespace Aircraft.Controllers
 {

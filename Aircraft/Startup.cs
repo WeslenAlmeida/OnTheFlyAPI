@@ -1,6 +1,6 @@
-using Aircraft.Services;
-using Aircraft.Utils;
-using Aircraft.Utils.Interface;
+using DomainAPI.Services.Aircraft;
+using DomainAPI.Database.Aircraft;
+using DomainAPI.Database.Aircraft.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

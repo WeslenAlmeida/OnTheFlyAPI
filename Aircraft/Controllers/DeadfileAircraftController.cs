@@ -1,5 +1,5 @@
-﻿using Aircraft.Models;
-using Aircraft.Services;
+﻿using DomainAPI.Models.Aircraft;
+using DomainAPI.Services.Aircraft;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
