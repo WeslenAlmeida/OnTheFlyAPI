@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Passenger.Models;
 using Passenger.Services;
@@ -6,7 +7,8 @@ using Passenger.Util;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Passenger.Controllers {
+namespace Passenger.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class PassengerController : ControllerBase {
