@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Airport.Models;
-using Airport.Services;
+﻿using DomainAPI.Models.Airport;
+using DomainAPI.Services.Airport;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Airport.Controllers
 {

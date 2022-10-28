@@ -2,7 +2,7 @@
 
 namespace DomainAPI.Models.Aircraft
 {
-    internal class DeadfileAircrafts
+    public class DeadfileAircrafts
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

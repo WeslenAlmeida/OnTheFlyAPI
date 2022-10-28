@@ -1,6 +1,6 @@
-using Company.Services;
-using Company.Utils;
-using Company.Utils.Interface;
+using DomainAPI.Database.Company;
+using DomainAPI.Database.Company.Interface;
+using DomainAPI.Services.Company;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

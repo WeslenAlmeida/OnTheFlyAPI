@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System;
 using DomainAPI.Database.Flight.Interface;
 using Newtonsoft.Json;
+using DomainAPI.Utils.FlightUtils;
 
 namespace DomainAPI.Services.Flight
 {

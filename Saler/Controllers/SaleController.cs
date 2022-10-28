@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DomainAPI.Models.Sale;
+using DomainAPI.Services.Sale;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Saler.Model;
-using Saler.Services;
 using System.Collections.Generic;
 
 namespace Saler.Controllers
