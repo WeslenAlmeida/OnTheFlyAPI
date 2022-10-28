@@ -1,8 +1,6 @@
-﻿using Company.Models;
-using Company.Services;
-using Microsoft.AspNetCore.Http;
+﻿using DomainAPI.Models.Company;
+using DomainAPI.Services.Company;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Company.Controllers

@@ -1,9 +1,9 @@
-﻿using Domain.Dto;
+﻿using DomainAPI.Dto.Passenger;
+using DomainAPI.Models.Passenger;
+using DomainAPI.Services.Passenger;
+using DomainAPI.Utils.Passenger;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Passenger.Models;
-using Passenger.Services;
-using Passenger.Util;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

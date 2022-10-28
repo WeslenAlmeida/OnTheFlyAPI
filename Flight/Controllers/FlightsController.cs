@@ -1,11 +1,10 @@
-﻿using System;
+﻿using DomainAPI.Models.Flight;
+using DomainAPI.Services.Flight;
+using DomainAPI.Utils.FlightUtils;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Airport.Controllers;
-using Flight.Models;
-using Flight.Services;
-using Flight.Utils;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Flight.Controllers
 {

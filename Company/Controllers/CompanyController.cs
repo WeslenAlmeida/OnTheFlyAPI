@@ -1,10 +1,10 @@
-﻿using Company.Models;
-using Company.Services;
+﻿using DomainAPI.Dto.Company;
+using DomainAPI.Models.Company;
+using DomainAPI.Services.Company;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Dtos.Company;
 
 namespace Company.Controllers
 {

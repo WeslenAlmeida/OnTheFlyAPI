@@ -1,4 +1,5 @@
 ﻿using DomainAPI.Models.Passenger;
+using DomainAPI.Utils.Passenger;
 using System;
 using System.ComponentModel.DataAnnotations;
 
