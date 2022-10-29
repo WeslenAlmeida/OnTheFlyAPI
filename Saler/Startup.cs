@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using DomainAPI.Database.Sale.Interface;
 using DomainAPI.Database.Sale;
 using DomainAPI.Services.Sale;
+using System.Text.Json.Serialization;
+
 
 namespace Saler
 {
@@ -27,11 +29,20 @@ namespace Saler
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             services.AddSingleton<SalesService>();
-            services.AddControllers();
+
+            //services.AddControllers();
+            //services.AddControllersWithViews();
+            services.AddControllers().AddNewtonsoftJson(x =>
+                                     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saler", Version = "v1" });
             });
+
+           
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

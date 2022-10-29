@@ -1,6 +1,8 @@
 ﻿using DomainAPI.Models.Flight;
 using DomainAPI.Models.Passenger;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace DomainAPI.Models.Sale
 {

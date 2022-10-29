@@ -63,11 +63,17 @@ namespace DomainAPI.Services.Passenger
         }
 
         public List<Passengers> Get() => _passenger.Find<Passengers>(passenger => true).ToList();
-        public List<Passengers> GetValids() => _passenger.Find<Passengers>(passenger => passenger.Status == true).ToList();
-
+        public Passengers GetValids(string cpf) => _passenger.Find<Passengers>(passenger => passenger.Status == true && passenger.Cpf == cpf).FirstOrDefault();
         public Passengers GetPassenger(string cpf) => _passenger.Find<Passengers>(passenger => passenger.Cpf == cpf).FirstOrDefault();
-        public void Update(string cpf, Passengers passengerIn)
+        public void Update(string cpf, Passengers passengerIn, PassengerUpdateDTO passengerUpDTO)
         {
+            passengerIn.Name = passengerUpDTO.Name;
+            passengerIn.Gender = passengerUpDTO.Gender;
+            passengerIn.Phone = passengerUpDTO.Phone;
+            passengerIn.Status = passengerUpDTO.Status;
+            passengerIn.Address.ZipCode = passengerUpDTO.Address.ZipCode;
+            passengerIn.Address.Complement = passengerUpDTO.Address.Complement;
+            passengerIn.Address.Number = passengerUpDTO.Address.Number;
             _passenger.ReplaceOne(passenger => passenger.Cpf == cpf, passengerIn);
         }
         public void UpdateRestrict(string cpf, Passengers passengerIn)
