@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flight", "Flight\Flight.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainAPI", "DomainAPI\DomainAPI.csproj", "{710F91FA-7C1B-4598-B5B9-ACF0681B720E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportAPI", "AirportAPI\AirportAPI.csproj", "{88DBD346-57CA-4791-A151-4512629A1CFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportAPI", "AirportAPI\AirportAPI.csproj", "{E5264613-B2DE-4B2D-8994-131180F2C278}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{710F91FA-7C1B-4598-B5B9-ACF0681B720E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710F91FA-7C1B-4598-B5B9-ACF0681B720E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{710F91FA-7C1B-4598-B5B9-ACF0681B720E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88DBD346-57CA-4791-A151-4512629A1CFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88DBD346-57CA-4791-A151-4512629A1CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88DBD346-57CA-4791-A151-4512629A1CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88DBD346-57CA-4791-A151-4512629A1CFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5264613-B2DE-4B2D-8994-131180F2C278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5264613-B2DE-4B2D-8994-131180F2C278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5264613-B2DE-4B2D-8994-131180F2C278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5264613-B2DE-4B2D-8994-131180F2C278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
