@@ -8,9 +8,9 @@ namespace DomainAPI.Models.Sale
 {
     public class Sales
     {
-        //public Flights Flight { get; set; }
-        public Passengers Passengers { get; set; }
-        //public bool Reserved { get; set; }
-        //public bool Sold { get; set; }
+        public Flights Flight { get; set; }
+        public List<Passengers> Passengers { get; set; }
+        public bool Reserved { get; set; }
+        public bool Sold { get; set; }
     }
 }

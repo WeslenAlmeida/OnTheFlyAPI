@@ -10,6 +10,7 @@ using DomainAPI.Database.Sale;
 using DomainAPI.Services.Sale;
 using System.Text.Json.Serialization;
 
+
 namespace Saler
 {
     public class Startup
@@ -24,19 +25,23 @@ namespace Saler
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddControllers().AddJsonOptions(x =>
-            //           x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saler", Version = "v1" });
-                c.DocumentFilter<RemoveSchemasFilter>();
-            });
-
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             services.AddSingleton<SalesService>();
+
+            //services.AddControllers();
+            //services.AddControllersWithViews();
+            services.AddControllers().AddNewtonsoftJson(x =>
+                                     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saler", Version = "v1" });
+            });
+
+           
            
         }
 
@@ -48,10 +53,6 @@ namespace Saler
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Saler v1"));
-                app.UseSwaggerUI(options =>
-                {
-                    options.DefaultModelExpandDepth(-1);
-                });
             }
 
             app.UseHttpsRedirection();

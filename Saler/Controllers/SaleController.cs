@@ -14,7 +14,7 @@ namespace Saler.Controllers
     public class SaleController : ControllerBase
     {
         private readonly SalesService _salesService;
-
+        Sales sl = new();
         public SaleController(SalesService salesServices)
         {
             _salesService = salesServices;
@@ -23,14 +23,28 @@ namespace Saler.Controllers
         [HttpGet]
         public ActionResult<List<Sales>> Get() => _salesService.Get();
 
-       
-        [HttpPost("id")]
-        public ActionResult<Task<Sales>> CreateAsync(string cpf, Sales sales)
-        {
-            var Passenger = new ConsumerController().GetPassengerAsync(cpf);
-           //var flight = new ConsumerController().GetFlightAsync(flightDate, aircraftrab);
 
-            return Ok(Passenger);
+        [HttpPost("cpf")]
+        public ActionResult<Sales> Create(string cpf)
+        {
+            
+            string[] list = cpf.Split(',');
+
+            for(int i = 0; i < list.Length; i++)
+            {
+                var passenger = new ConsumerController().GetPassengerAsync(list[i]);
+                int idade = DateTime.Now.Year - passenger.Result.DtBirth.Year;
+                if (i == 0 && idade < 18)
+                    return BadRequest("Precisa ser maior de 18 anos para comprara a passagem!");
+                
+                sl.Passengers.Add(passenger.Result);
+            }
+
+         
+            
+            //var flight = new ConsumerController().GetFlightAsync(flightDate, aircraftrab);
+          
+            return Ok(sl);
 
         }
     }

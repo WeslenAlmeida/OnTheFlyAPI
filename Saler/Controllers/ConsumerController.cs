@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System;
 using Newtonsoft.Json;
+using System.Net;
+using Nancy.Json;
 
 namespace Saler.Controllers
 {
@@ -40,7 +42,7 @@ namespace Saler.Controllers
                 HttpResponseMessage response = await _adressClient.GetAsync(_consumerGetPassenger + cpf);
                 //response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Passengers>(json);
+                return new JavaScriptSerializer().Deserialize<Passengers>(json);
             }
         }
     }
