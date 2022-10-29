@@ -84,11 +84,7 @@ namespace Passenger.Controllers
 
             if (PassengerUtil.ValidateCpf(cpf)) {
                 var passenger = _passengerService.GetPassenger(PassengerUtil.MaskCPF(cpf));
-                
-                //passengerIn.Cpf = passenger.Cpf;
-                //passengerIn.DtBirth = passenger.DtBirth;
-                //passengerIn.DtRegister = passenger.DtRegister;
-
+               
                 if (passenger == null) {
                     return BadRequest("Cadastro de Passageiro Não Encontrado!");
                 } else {
