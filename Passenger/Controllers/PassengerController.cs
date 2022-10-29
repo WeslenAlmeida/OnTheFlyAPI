@@ -80,20 +80,20 @@ namespace Passenger.Controllers
         }
 
         [HttpPut("Alter/Registration", Name = "AlterPassenger")]
-        public async Task<ActionResult> UpdateAsync(string cpf, Passengers passengerIn) {
+        public async Task<ActionResult> UpdateAsync(string cpf, PassengerUpdateDTO passengerIn) {
 
             if (PassengerUtil.ValidateCpf(cpf)) {
                 var passenger = _passengerService.GetPassenger(PassengerUtil.MaskCPF(cpf));
                 
-                passengerIn.Cpf = passenger.Cpf;
-                passengerIn.DtBirth = passenger.DtBirth;
-                passengerIn.DtRegister = passenger.DtRegister;
+                //passengerIn.Cpf = passenger.Cpf;
+                //passengerIn.DtBirth = passenger.DtBirth;
+                //passengerIn.DtRegister = passenger.DtRegister;
 
                 if (passenger == null) {
                     return BadRequest("Cadastro de Passageiro Não Encontrado!");
                 } else {
-                   
-                    _passengerService.Update(PassengerUtil.MaskCPF(cpf), passengerIn);
+                    passenger.Address = new AddressServices().MainAsync(passengerIn.Address.ZipCode).Result;
+                    _passengerService.Update(PassengerUtil.MaskCPF(cpf), passenger,passengerIn);
                     return NoContent();
                 }
 
@@ -132,12 +132,9 @@ namespace Passenger.Controllers
                     return BadRequest("Cadastro de Passageiro Não Encontrado!"); ;
                 } else {
 
-                    if (passenger.Status == true) {
-                        passenger.Status = false;//Json não aceita booleano precisa converter para string
-                        _passengerService.UpdateRestrict(PassengerUtil.MaskCPF(cpf), passenger);
-                        _restrictService.CreateRestrict(passenger);
-                       
-                    }
+                   passenger.Status = false;//Json não aceita booleano precisa converter para string
+                  _passengerService.UpdateRestrict(PassengerUtil.MaskCPF(cpf), passenger);
+                  _restrictService.CreateRestrict(passenger);
                 }
                 return NoContent();
             } else {
@@ -156,7 +153,7 @@ namespace Passenger.Controllers
                 } else {
                     if (passenger.Status == false) {
                         passenger.Status = true;
-                        _passengerService.Update(PassengerUtil.MaskCPF(cpf), passenger);
+                        _passengerService.UpdateRestrict(PassengerUtil.MaskCPF(cpf), passenger);
                         _restrictService.RemoveRestrict(passenger);
 
                     }
@@ -167,8 +164,19 @@ namespace Passenger.Controllers
             }
         }
 
-        [HttpGet("StatusValids", Name = "GetValidsPassengers")]
-        public ActionResult<List<Passengers>> ValidPassengers() => _passengerService.GetValids();
+        [HttpGet("StatusValids/Cpf", Name = "GetValidsPassenger")]
+        public async Task<ActionResult<Passengers>> ValidPassengers(string cpf) {
+            if (PassengerUtil.ValidateCpf(cpf) == true) {
+                var passenger = _passengerService.GetValids(PassengerUtil.MaskCPF(cpf));
+                if (passenger == null) {
+                    return BadRequest("Cadastro de Passageiro Não Encontrado!"); ;
+                } else {
+                    return Ok(passenger);
+                }
+            } else {
+                return BadRequest("CPF Informado Não é valido!");
+            }
+        }
 
     }
 }
