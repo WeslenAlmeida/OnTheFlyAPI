@@ -52,7 +52,7 @@ namespace Company.Controllers
             {
                 var address = await _addressServives.GetAddress(company.Address.ZipCode);
 
-                var addressIn = new Address()
+                var addressIn = new CompanyAddress()
                 {
                     ZipCode = address.ZipCode,
                     Street = address.Street,

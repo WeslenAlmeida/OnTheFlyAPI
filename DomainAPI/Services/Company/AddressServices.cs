@@ -15,14 +15,14 @@ namespace DomainAPI.Services.Company
         {
         }
 
-        public async Task<Address> GetAddress(string cep)
+        public async Task<CompanyAddress> GetAddress(string cep)
         {
-            Address address;
+            CompanyAddress address;
             using (HttpClient _adressClient = new HttpClient())
             {
                 HttpResponseMessage response = await _adressClient.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
                 var adressJson = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode) return address = JsonConvert.DeserializeObject<Address>(adressJson);
+                if (response.IsSuccessStatusCode) return address = JsonConvert.DeserializeObject<CompanyAddress>(adressJson);
                 else return null;
             }
         }

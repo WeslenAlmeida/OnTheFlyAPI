@@ -25,7 +25,7 @@ namespace DomainAPI.Models.Company
         [JsonProperty("dtOpen")]
         public DateTime DtOpen { get; set; }
         [JsonProperty("address")]
-        public Address Address { get; set; }
+        public CompanyAddress Address { get; set; }
         [JsonProperty("status")]
         public bool Status { get; set; }
     }

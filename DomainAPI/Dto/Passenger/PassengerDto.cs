@@ -21,7 +21,7 @@ namespace DomainAPI.Dto.Passenger
         public DateTime DtBirth { get; set; }
         public DateTime DtRegister { get; set; }
         public bool Status { get; set; }
-        public Address Address { get; set; }
+        public PassengerAddress Address { get; set; }
 
         public PassengerDTO(string cpf, string phone, bool status, string gender)
         {
