@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DomainAPI.Models.Company
 {
-    public class Address
+    public class CompanyAddress
     {
         [Required]
         [StringLength(9)]

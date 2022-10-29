@@ -35,7 +35,7 @@ namespace DomainAPI.Models.Passenger
 
         public bool Status { get; set; }
 
-        public Address Address { get; set; }
+        public PassengerAddress Address { get; set; }
 
     }
 }

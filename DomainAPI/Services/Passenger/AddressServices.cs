@@ -12,14 +12,14 @@ namespace DomainAPI.Services.Passenger
     public class AddressServices
     {
 
-        private Address _address;
+        private PassengerAddress _address;
 
         public AddressServices()
         {
 
         }
 
-        public async Task<Address> MainAsync(string zipCode)
+        public async Task<PassengerAddress> MainAsync(string zipCode)
         {
 
             using (HttpClient client = new HttpClient())
@@ -29,7 +29,7 @@ namespace DomainAPI.Services.Passenger
                 var adressJson = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
-                    return _address = JsonConvert.DeserializeObject<Address>(adressJson);
+                    return _address = JsonConvert.DeserializeObject<PassengerAddress>(adressJson);
 
                 else
                     return null;

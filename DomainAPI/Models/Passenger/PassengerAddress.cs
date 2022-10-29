@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DomainAPI.Models.Passenger
 {
-    public class Address
+    public class PassengerAddress
     {
 
 
