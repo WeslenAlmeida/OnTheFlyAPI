@@ -54,6 +54,7 @@ namespace Saler.Controllers {
             } else {
                 return BadRequest("Não exite Voo Marcado para essa Data!");
             }
+            _salesService.Create(sl);
             
             return Ok(sl);
         }

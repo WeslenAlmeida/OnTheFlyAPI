@@ -8,6 +8,10 @@ using System;
 using DomainAPI.Database.Flight.Interface;
 using Newtonsoft.Json;
 using DomainAPI.Utils.FlightUtils;
+using DomainAPI.Models.Aircraft;
+using System.Net;
+using Newtonsoft.Json.Converters;
+
 
 namespace DomainAPI.Services.Flight
 {

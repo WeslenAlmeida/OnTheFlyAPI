@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DomainAPI.Models.Aircraft;
+using Newtonsoft.Json;
 using System;
 
 namespace DomainAPI.Utils.FlightUtils

@@ -1,4 +1,6 @@
-﻿using DomainAPI.Models.Flight;
+﻿using DomainAPI.Utils.FlightUtils;
+using DomainAPI.Models.Aircraft;
+using DomainAPI.Models.Flight;
 using DomainAPI.Services.Flight;
 using DomainAPI.Utils.FlightUtils;
 using Microsoft.AspNetCore.Mvc;
