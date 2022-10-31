@@ -36,16 +36,16 @@ namespace AirportAPI.Controllers
 
             return airport;
         }
-        [HttpGet("/ByCountry/{country_id}", Name = "GetAirportCountry")]
-        public ActionResult<List<Airport>> GetByCountry(string country_id)
-        {
-            var airport = _airportServices.GetByCountry(country_id);
+        //[HttpGet("/ByCountry/{country_id}", Name = "GetAirportCountry")]
+        //public ActionResult<List<Airport>> GetByCountry(string country_id)
+        //{
+        //    var airport = _airportServices.GetByCountry(country_id);
 
-            if (airport == null)
-                return NotFound();
+        //    if (airport == null)
+        //        return NotFound();
 
-            return airport;
-        }
+        //    return airport;
+        //}
 
         [HttpGet("/ByCity/{city_code}", Name = "GetAirportCity")]
         public ActionResult<List<Airport>> GetByCity(string city_code)
