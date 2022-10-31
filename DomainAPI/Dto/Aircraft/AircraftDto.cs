@@ -2,7 +2,7 @@
 
 namespace DomainAPI.Dto.Aircraft
 {
-    public class AircraftDto
+    public class AircraftDto // Classe para obter dados para criação da aeronave
     {
         [Required]
         public string RAB { get; set; }

@@ -18,12 +18,15 @@ namespace Company.Controllers
             _companyServices = companyServices;
         }
 
+        //Endpoint para obter todas companhias restritas cadastradas
         [HttpGet]
         public async Task<ActionResult<List<RestrictedCompany>>> Get() => await _restrictedCompanyServices.Get();
 
+        //Endpoint para obter uma companhia restrita especifica
         [HttpGet("{cnpj}", Name = "GetRestrict")]
         public async Task<ActionResult<RestrictedCompany>> Get(string cnpj) => await _restrictedCompanyServices.Get(cnpj);
 
+        //Endpoint para adionar um cnpj de companhia restrita
         [HttpPost]
         public async Task<ActionResult<RestrictedCompany>> Create(RestrictedCompany restrict)
         {
@@ -49,6 +52,7 @@ namespace Company.Controllers
             return Ok(restrict);
         }
 
+        //Endpoint para alteração do cnpj retrito
         [HttpPut]
         public async Task<IActionResult> Put(string cnpj)
         {
@@ -61,6 +65,7 @@ namespace Company.Controllers
             return Ok();
         }
 
+        //Endpoint para deletar um cnpj dos restritos
         [HttpDelete("{cnpj}")]
         public async Task<IActionResult> Remove(string cnpj)
         {

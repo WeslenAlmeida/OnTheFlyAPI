@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DomainAPI.Dto.Company
 {
-    public class CompanyDtoTwo
+    public class CompanyDtoTwo // Classe Dto para pegar apenas os dados necessários para criação de uma company
     {
         public string CNPJ { get; set; }
         [Required]
