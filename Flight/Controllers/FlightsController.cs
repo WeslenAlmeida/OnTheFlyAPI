@@ -1,4 +1,5 @@
-﻿using DomainAPI.Models.Flight;
+﻿using DomainAPI.Dto.Flight;
+using DomainAPI.Models.Flight;
 using DomainAPI.Services.Flight;
 using DomainAPI.Utils.FlightUtils;
 using Microsoft.AspNetCore.Mvc;
@@ -20,59 +21,39 @@ namespace Flight.Controllers
         }
 
 
-        [HttpPost("{iata:length(3)}/{rab:length(5)}/{departuredate}")]
-        public async Task<ActionResult<Flights>> CreateFlightAsync(string iata, string rab, DateTime departuredate)
+        [HttpPost("CreateFlight/")]
+        public async Task<ActionResult<Flights>> CreateFlightAsync(FlightsDto flightDto)
         {
-            var destiny = await _flightsServices.GetAirportAPIAsync(iata);
+            var destiny = await _flightsServices.GetAirportAPIAsync(flightDto.Iata);
 
-            if (destiny == null)
-                destiny = await _flightsServices.GetAirportWebAPIAsync(iata);
+            if (destiny == null) return NotFound("Aeroporto não encontrado!");
 
-            if (destiny == null)
-                return NotFound("Aeroporto não encontrado!");
+            if (destiny.Country.ToUpper() != "BR") return BadRequest("Só é possível voo Nacional!");
 
-            if (destiny.Country.ToUpper() != "BR")
-                return BadRequest("Só é possível voo internacional!");
+            var plane = await _flightsServices.GetAircraftAPIAsync(flightDto.Rab);
 
-            //await _airportsServices.CreateAirportAsync(destiny);
+            if (plane == null) return NotFound("Aeronave não encontrada!");
 
+            if (FlightUtils.DepartureValidator(flightDto.Departure) == false) return BadRequest("Não é possível cadastrar voo com data passada!");
 
+            if (plane.Company.Status == false) return BadRequest("Não pode ser cadastrado voos para essa companhia!");
 
-            //var plane = await _aircraftServices.Get(rab);
-            //if(plane == null) return NotFound();
+            if (FlightUtils.DateOpenCompanyValidator(plane.Company.DtOpen) == false) return BadRequest("Companhia com data de criação menor que 6 meses!");
 
+            if (_flightsServices.GetOneAsync(flightDto.Departure, plane.RAB) == null) return BadRequest("Aeronave já possui voo nesse dia!");
 
-            //verificar se a data de voo é futura
-
-            if (FlightUtils.DepartureValidator(departuredate) == false) return BadRequest("Não é possível cadastrar voo com data passada!");
-
-
-
-
-            //if (plane.Company.Status == false) return BadRequest(plane.Company);
-
-            //if (FlightUtils.DateOpenCompanyValidator(plane.Company.DtOpen) == false) return BadRequest(plane.Company.DtOpen);
-
-            //if (_flightsServices.GetOneAsync(departuredate, plane.rab) == null) return BadRequest(departuredate);
-
-
-            //plane.DtLastFlight = System.DateTime.Now;
-            //_aircraftServices.Update(plane.reb, plane);
-
-
+            await _flightsServices.PutDateAircraftAPIAsync(flightDto.Rab);
 
             var flight = new Flights()
             {
-                Departure = departuredate,
+                Departure = flightDto.Departure,
                 Destiny = destiny,
-                Plane = null,
+                Plane = plane,
                 Sales = 0,
                 Status = true
             };
 
-
             await _flightsServices.CreateFlightAsync(flight);
-
 
             return CreatedAtRoute("GetFlight", new { id = flight.Id }, flight);
         }
@@ -81,6 +62,11 @@ namespace Flight.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Flights>>> GetAllAsync() => await _flightsServices.GetAllAsync();
 
+        [HttpGet("Date/{date}")]
+        public async Task<ActionResult<List<Flights>>> GetByDateAsync(DateTime date) => await _flightsServices.GetByDateAsync(date);
+
+        [HttpGet("ByDateRange/{initialdate}/{finaldate}")]
+        public async Task<ActionResult<List<Flights>>> GetByDateRangeAsync(DateTime initialdate, DateTime finaldate) => await _flightsServices.GetByDateRangeAsync(initialdate, finaldate);
 
         [HttpGet("{id:length(24)}", Name = "GetFlight")]
         public async Task<ActionResult<Flights>> GetOneAsync(string id)
@@ -96,7 +82,7 @@ namespace Flight.Controllers
         }
 
 
-        [HttpGet("{date}/{rab:length(6)}")]
+        [HttpGet("GetOneFlight/{date}/{rab:length(6)}")]
         public async Task<ActionResult<Flights>> GetOneAsync(DateTime date, string rab)
         {
             var flight = await _flightsServices.GetOneAsync(date, rab);
@@ -111,7 +97,7 @@ namespace Flight.Controllers
 
 
         [HttpPut("cancelflight/{id:length(24)}")]
-        public async Task<ActionResult<Flights>> UpdateAsync(string id)
+        public async Task<ActionResult<Flights>> UpdateCancelFlightAsync(string id)
         {
             var flight = await _flightsServices.GetOneAsync(id);
 
@@ -122,7 +108,23 @@ namespace Flight.Controllers
 
             flight.Status = false;
 
-            await _flightsServices.UpdateAsync(id, flight);
+            await _flightsServices.UpdateCancelFlightAsync(id, flight);
+
+            return CreatedAtRoute("GetFlight", new { id = flight.Id }, flight);
+        }
+
+
+        [HttpPut]
+        public async Task<ActionResult<Flights>> UpdateAsync(Flights flightIn)
+        {
+            var flight = await _flightsServices.GetOneAsync(flightIn.Id);
+
+            if (flight == null || flight.Status == false)
+            {
+                return NotFound();
+            }
+
+            await _flightsServices.UpdateAsync(flight);
 
             return CreatedAtRoute("GetFlight", new { id = flight.Id }, flight);
         }
