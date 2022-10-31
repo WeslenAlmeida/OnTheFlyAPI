@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using DomainAPI.Utils.FlightUtils;
 using DomainAPI.Models.Aircraft;
 using Nancy.Json;
-using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace DomainAPI.Services.Flight
 {
@@ -35,6 +35,8 @@ namespace DomainAPI.Services.Flight
 
         public async Task<Flights> GetOneAsync(string id) => await _flightsServices.Find(flight => flight.Id == id).FirstOrDefaultAsync();
 
+
+        //Filtra um voo pela data e aeronave
         public async Task<Flights> GetOneAsync(DateTime date, string rab)
         {
             var flightsRabList = await _flightsServices.Find(flight => flight.Plane.RAB.ToUpper() == rab.ToUpper()).ToListAsync();
@@ -45,6 +47,7 @@ namespace DomainAPI.Services.Flight
             return null;
         }
 
+        //Filtra pela data do voo e retorna uma lista de voos ativos
         public async Task<List<Flights>> GetByDateAsync(DateTime date)
         {
             var flightsDateList = await _flightsServices.Find(flight => true).ToListAsync();
@@ -57,6 +60,7 @@ namespace DomainAPI.Services.Flight
             return Listflight;
         }
 
+        //Filtra por intervalo de data e retorna uma lista de voos ativos
         public async Task<List<Flights>> GetByDateRangeAsync(DateTime initialdate, DateTime finaldate)
         {
             var flightsDateList = await _flightsServices.Find(flight => true).ToListAsync();
@@ -77,6 +81,7 @@ namespace DomainAPI.Services.Flight
         public async Task UpdateAsync(string id, Flights flightIn) => await _flightsServices.ReplaceOneAsync(flight => flight.Id == id, flightIn);
 
 
+        //Busca um aeroporto existente no banco de dados da API Airport e AirportAPI
         public async Task<Airports> GetAirportAPIAsync(string iata)
         {
             var httpclient = new HttpClient();
@@ -86,6 +91,7 @@ namespace DomainAPI.Services.Flight
             return airport;
         }
 
+        //Busca uma aeronave existente
         public async Task<Aircrafts> GetAircraftAPIAsync(string rab)
         {
             var httpclient = new HttpClient();
@@ -99,16 +105,18 @@ namespace DomainAPI.Services.Flight
             return aircraft;
         }
 
-        public async Task<IActionResult> PutDateAircraftAPIAsync(string rab)
+        //Altera a data de último voo da aeronave no banco de dados da API Aircraft
+        public async Task<bool> PutDateAircraftAPIAsync(string rab)
         {
             var httpclient = new HttpClient();
-            //var airportresponse = await httpclient.GetAsync(FlightUtils.GetAPIUri("ApiPutAircrafUri") + rab);
-            var airportresponse = await httpclient.GetAsync("https://localhost:44375/api/Aircraft/UpdateFlight/PT-LLL");
+            string jsonString = new JavaScriptSerializer().Serialize(rab);
 
+            var http = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var JsonString = await airportresponse.Content.ReadAsStringAsync();
-            dynamic result = JsonConvert.DeserializeObject(JsonString);
-            return result;
+            var aircraftresponse = await httpclient.PutAsync(FlightUtils.GetAPIUri("ApiPutAircrafUri") + rab, http);
+
+            if (aircraftresponse.IsSuccessStatusCode) return true;
+            return false;
         }
     }
 }

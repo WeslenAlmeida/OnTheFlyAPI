@@ -5,17 +5,17 @@ namespace DomainAPI.Utils.Airport
 {
     public class AirportUtils
     {
-            public static IConfigurationRoot Configuration { get; set; }
+        public static IConfigurationRoot Configuration { get; set; }
 
-            public static string GetAPIUri(string uriJsonName)
-            {
-                var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        //Busca o endereço do endpoit no arquivo JSON appsettings
+        public static string GetAPIUri(string uriJsonName)
+        {
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-                Configuration = builder.Build();
-                return Configuration["DatabaseSettings:" + uriJsonName];
-            }
+            Configuration = builder.Build();
+            return Configuration["DatabaseSettings:" + uriJsonName];
+        }
     }
 }
-    
