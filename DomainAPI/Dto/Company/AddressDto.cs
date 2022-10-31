@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DomainAPI.Dto.Company
 {
-    public class AddressDto
+    public class AddressDto // Classe Dto para transformar o endereço da companhia em um objeto
     {
         [Required]
         [StringLength(9)]
