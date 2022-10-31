@@ -13,7 +13,7 @@ namespace Saler.Controllers
     public class ConsumerController
     {
         private readonly string _consumerGetFligth = "https://localhost:44330/api/Flights/GetOneFlight/";
-        private readonly string _consumerPutFligth = "https://localhost:44330/api/Flights/cancelflight/";
+        private readonly string _consumerPutFligth = "https://localhost:44330/api/Flights/";
         private readonly string _consumerGetPassenger = "https://localhost:44388/api/Passenger/StatusValids/Cpf?cpf=";
         public async Task<Flights> GetFlightAsync(DateTime date, string rab) {
             using (HttpClient _adressClient = new()) {
@@ -25,9 +25,9 @@ namespace Saler.Controllers
         }
 
         public async Task<Flights> PutFlightAsync(Flights flight) {
-            using (HttpClient _adressClient = new()) {
-                string fligthPost = JsonConvert.SerializeObject(flight);
-                HttpResponseMessage response = await _adressClient.GetAsync(_consumerPutFligth + fligthPost);
+            using (HttpContent _adressClient = new();) {
+                //string fligthPost = JsonConvert.SerializeObject(flight);
+                HttpResponseMessage response = await _adressClient.PutAsync(_consumerPutFligth + flight.Id + flight);
                 response.EnsureSuccessStatusCode();
                 return flight;
             }
