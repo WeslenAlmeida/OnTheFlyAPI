@@ -67,7 +67,7 @@ namespace Saler.Controllers {
             } else {
                 return BadRequest("Não exite Voo Marcado para essa Data!");
             }
-            var result = new ConsumerController().PutFlightAsync(sl.Flight);
+            var result = new ConsumerController().PutFlightAsync(sl.Flight.Id, sl.Flight);
             _salesService.Create(sl);
             
             return Ok(sl);

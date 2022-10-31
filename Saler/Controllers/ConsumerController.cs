@@ -24,10 +24,10 @@ namespace Saler.Controllers
             }
         }
 
-        public async Task<Flights> PutFlightAsync(Flights flight) {
-            using (HttpContent _adressClient = new();) {
+        public async Task<Flights> PutFlightAsync(string id , Flights flight) {
+            using (HttpClient _adressClient = new()) {
                 //string fligthPost = JsonConvert.SerializeObject(flight);
-                HttpResponseMessage response = await _adressClient.PutAsync(_consumerPutFligth + flight.Id + flight);
+                HttpResponseMessage response = await _adressClient.GetAsync(_consumerPutFligth + id + flight);
                 response.EnsureSuccessStatusCode();
                 return flight;
             }
