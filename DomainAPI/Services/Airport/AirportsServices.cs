@@ -1,8 +1,11 @@
 ﻿using DomainAPI.Database.Airport.Interface;
+using DomainAPI.Dto.Airport;
 using DomainAPI.Models.Airport;
+using DomainAPI.Utils.Airport;
 using MongoDB.Driver;
-using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DomainAPI.Services.Airport
@@ -52,13 +55,23 @@ namespace DomainAPI.Services.Airport
         public async Task RemoveOneAsync(Airports airportRemove) => await _airportsServices.DeleteOneAsync(airport => airport.Id == airportRemove.Id);
 
 
-        //public async Task<Airports> GetAirportWEBAPIAsync(string iata)
-        //{
-        //    var httpclient = new HttpClient();
-        //    var airportresponse = await httpclient.GetAsync(AirportUtils.GetAPIUri("WebApiGetAirportUri") + iata);
-        //    var JsonString = await airportresponse.Content.ReadAsStringAsync();
-        //    var airport = JsonConvert.DeserializeObject<AirportsDto>(JsonString);
-        //    return airport;
-        //}
+        public async Task<Airports> GetAirportWEBAPIAsync(string iata)
+        {
+            var httpclient = new HttpClient();
+            var airportresponse = await httpclient.GetAsync(AirportUtils.GetAPIUri("WebApiGetAirportUri") + iata);
+            var JsonString = await airportresponse.Content.ReadAsStringAsync();
+
+            var airportdto = JsonConvert.DeserializeObject<AirportsDto>(JsonString);
+
+            var airport = new Airports()
+            {
+                IATA = airportdto.iata,
+                City = airportdto.city,
+                State = airportdto.state,
+                Country = airportdto.country_id
+            };
+
+            return airport;
+        }
     }
 }

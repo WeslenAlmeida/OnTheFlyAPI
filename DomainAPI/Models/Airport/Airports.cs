@@ -17,7 +17,6 @@ namespace DomainAPI.Models.Airport
         public string City { get; set; }
 
         [Required(ErrorMessage = "O nome do Estado é obrigatório", AllowEmptyStrings = false)]
-        [StringLength(2)]
         public string State { get; set; }
 
         [Required(ErrorMessage = "O nome do País é obrigatório", AllowEmptyStrings = false)]
