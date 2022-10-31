@@ -165,7 +165,7 @@ namespace Passenger.Controllers
             if (PassengerUtil.ValidateCpf(cpf) == true) {
                 var passenger = _passengerService.GetValids(PassengerUtil.MaskCPF(cpf));
                 if (passenger == null) {
-                    return BadRequest("Cadastro de Passageiro Não Encontrado!"); ;
+                    return BadRequest("Cadastro de Passageiro Não Encontrado!"); 
                 } else {
                     return Ok(passenger);
                 }

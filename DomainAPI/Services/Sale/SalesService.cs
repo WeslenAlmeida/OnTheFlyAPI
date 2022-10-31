@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using DomainAPI.Database.Sale.Interface;
 using System;
+using DomainAPI.Utils.Passenger;
+using DomainAPI.Models.Passenger;
 
 namespace DomainAPI.Services.Sale
 {
@@ -25,8 +27,12 @@ namespace DomainAPI.Services.Sale
 
         public List<Sales> Get() => _sales.Find(sales => true).ToList();
 
-        public Sales GetSpecificSale(string cpf,DateTime date, string rab) =>
-            _sales.Find<Sales>(sales => sales.Flight.Plane.RAB == rab && sales.Flight.Departure==date && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf))).FirstOrDefault();
+        //public Sales GetSpecificSale(Passengers passenger) =>
+        //   _sales.Find<Sales>(sales => sales.Passengers.Contains(passenger)).FirstOrDefault();
+
+
+        public Sales GetSpecificSale(Passengers passenger, DateTime date, string rab) =>
+            _sales.Find<Sales>(sales => sales.Flight.Plane.RAB == rab && sales.Flight.Departure == date && sales.Passengers.Contains(passenger)).FirstOrDefault();
 
         //public void Update(string fligthId, string cpf, Sales salesIn) =>
         //    _sales.ReplaceOne(sales => sales.Flight.Id == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)), salesIn);

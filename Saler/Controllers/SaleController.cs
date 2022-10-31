@@ -7,6 +7,7 @@ using DomainAPI.Services.Sale;
 using DomainAPI.Utils.Passenger;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,23 +28,35 @@ namespace Saler.Controllers {
 
 
         [HttpPost("Sold/cpf")]
-        public ActionResult<Sales> CreateSold(string cpf, DateTime date ,string rab) {
-
+        public ActionResult<Sales> CreateSold(string cpf, DateTime date, string rab) {
+          
             string[] list = cpf.Split(',');
+            
            
-
+            List<Passengers> passes = new List<Passengers>();
+           
             for (int i = 0; i < list.Length; i++) {
                 var passenger = new ConsumerController().GetPassengerAsync(list[i]);
                 int age = DateTime.Now.Year - passenger.Result.DtBirth.Year;
-                if (i == 0 && age < 18)
+                if (i == 0 && age < 18) {
                     return BadRequest("Precisa ser Maior de 18 Anos para Comprar a Passagem!");
+                } else {
+                   
+                    passes.Add(passenger.Result);
+                    var sale = _salesService.GetSpecificSale(passenger.Result,date,rab);
+                    if (sale == null) {
+                        sl.Passengers = passes;
+                    } else {
+                        return BadRequest("Venda já foi Cadastrada com esse CPF!");
+                    }
 
-                sl.Passengers.Add(passenger.Result);
+
+                }
             }
-
+          
             var fligth = new ConsumerController().GetFlightAsync(date, rab);
             sl.Flight = fligth.Result;
-            if (sl.Flight.Departure==date && sl.Flight.Plane.RAB.Equals(rab)) {
+            if (sl.Flight.Departure == date && sl.Flight.Plane.RAB.Equals(rab)) {
                 var operation = sl.Flight.Sales + sl.Passengers.Count;
                 if (operation <= sl.Flight.Plane.Capacity) {
                     sl.Sold = true;
@@ -59,56 +72,56 @@ namespace Saler.Controllers {
             return Ok(sl);
         }
 
-        [HttpPost("Reserverd/cpf")]
-        public ActionResult<Sales> CreateReserved(string cpf, DateTime date, string rab) {
+        //[HttpPost("Reserverd/cpf")]
+        //public ActionResult<Sales> CreateReserved(string cpf, DateTime date, string rab) {
 
-            string[] list = cpf.Split(',');
+        //    string[] list = cpf.Split(',');
 
 
-            for (int i = 0; i < list.Length; i++) {
-                var passenger = new ConsumerController().GetPassengerAsync(list[i]);
-                int age = DateTime.Now.Year - passenger.Result.DtBirth.Year;
-                if (i == 0 && age < 18)
-                    return BadRequest("Precisa ser Maior de 18 Anos para Comprar a Passagem!");
+        //    for (int i = 0; i < list.Length; i++) {
+        //        var passenger = new ConsumerController().GetPassengerAsync(list[i]);
+        //        int age = DateTime.Now.Year - passenger.Result.DtBirth.Year;
+        //        if (i == 0 && age < 18)
+        //            return BadRequest("Precisa ser Maior de 18 Anos para Comprar a Passagem!");
 
-                sl.Passengers.Add(passenger.Result);
-            }
+        //        sl.Passengers.Add(passenger.Result);
+        //    }
             
-            sl.Flight = new ConsumerController().GetFlightAsync(date, rab).Result;
+        //    sl.Flight = new ConsumerController().GetFlightAsync(date, rab).Result;
             
-            if (sl.Flight.Departure == date && sl.Flight.Plane.RAB.Equals(rab)) {
-                var operation = sl.Flight.Sales + sl.Passengers.Count;
-                if (operation <= sl.Flight.Plane.Capacity) {
-                    sl.Sold = false;
-                    sl.Reserved = true;
-                } else {
-                    return BadRequest("Capacidade de Assentos da Aeronave está Esgotado!");
-                }
-            } else {
-                return BadRequest("Não exite Voo Marcado para essa Data!");
-            }
+        //    if (sl.Flight.Departure == date && sl.Flight.Plane.RAB.Equals(rab)) {
+        //        var operation = sl.Flight.Sales + sl.Passengers.Count;
+        //        if (operation <= sl.Flight.Plane.Capacity) {
+        //            sl.Sold = false;
+        //            sl.Reserved = true;
+        //        } else {
+        //            return BadRequest("Capacidade de Assentos da Aeronave está Esgotado!");
+        //        }
+        //    } else {
+        //        return BadRequest("Não exite Voo Marcado para essa Data!");
+        //    }
 
-            return Ok(sl); 
-        }
+        //    return Ok(sl); 
+        //}
 
-        [HttpGet("Sale")]
-        public ActionResult<Sales> GetsSpecificSale(string cpf, DateTime date, string rab) {
+        //[HttpGet("Sale")]
+        //public ActionResult<Sales> GetsSpecificSale(string cpf, DateTime date, string rab) {
 
-            var passenger = new ConsumerController().GetPassengerAsync(cpf);
-            sl.Flight = new ConsumerController().GetFlightAsync(date,rab).Result;
+        //    var passenger = new ConsumerController().GetPassengerAsync(cpf);
+        //    sl.Flight = new ConsumerController().GetFlightAsync(date,rab).Result;
 
-            if (passenger ==null && sl.Flight == null) {
-                return BadRequest("Passageiro ou Voo não foi Encntrado!");
+        //    if (passenger ==null && sl.Flight == null) {
+        //        return BadRequest("Passageiro ou Voo não foi Encntrado!");
 
-            } else {
-                var sale = _salesService.GetSpecificSale(cpf,date,rab);
-                if (sale == null) {
-                    return BadRequest("Venda não Encontrada!");
-                } else {
-                    return Ok(sale);
-                }
-            }
-        }
+        //    } else {
+        //        var sale = _salesService.GetSpecificSale(cpf,date,rab);
+        //        if (sale == null) {
+        //            return BadRequest("Venda não Encontrada!");
+        //        } else {
+        //            return Ok(sale);
+        //        }
+        //    }
+        //}
 
     }
 }
