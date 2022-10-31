@@ -74,7 +74,7 @@ namespace DomainAPI.Services.Flight
 
         public async Task UpdateCancelFlightAsync(string id, Flights flightIn) => await _flightsServices.ReplaceOneAsync(flight => flight.Id == id, flightIn);
 
-        public async Task UpdateAsync(Flights flightIn) => await _flightsServices.ReplaceOneAsync(flight => flight.Id == flightIn.Id, flightIn);
+        public async Task UpdateAsync(string id, Flights flightIn) => await _flightsServices.ReplaceOneAsync(flight => flight.Id == id, flightIn);
 
 
         public async Task<Airports> GetAirportAPIAsync(string iata)

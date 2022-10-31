@@ -114,17 +114,17 @@ namespace Flight.Controllers
         }
 
 
-        [HttpPut]
-        public async Task<ActionResult<Flights>> UpdateAsync(Flights flightIn)
+        [HttpPut("{id:length(24)}")]
+        public async Task<ActionResult<Flights>> UpdateAsync(string id, Flights flightIn)
         {
-            var flight = await _flightsServices.GetOneAsync(flightIn.Id);
+            var flight = await _flightsServices.GetOneAsync(id);
 
             if (flight == null || flight.Status == false)
             {
                 return NotFound();
             }
 
-            await _flightsServices.UpdateAsync(flight);
+            await _flightsServices.UpdateAsync(id, flight);
 
             return CreatedAtRoute("GetFlight", new { id = flight.Id }, flight);
         }
