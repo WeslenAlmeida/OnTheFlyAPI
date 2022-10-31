@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DomainAPI.Dto.Airport
 {
-    public class Airports
+    public class AirportsDto
     {
         [JsonPropertyName("_id")]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -18,7 +18,7 @@ namespace DomainAPI.Dto.Airport
         public string name { get; set; }
         [JsonPropertyName("city_code")]
         public string city_code { get; set; }
-        [JsonPropertyName("country_ìd")]
+        [JsonPropertyName("country_id")]
         public string country_id { get; set; }
         [JsonPropertyName("location")]
         public string location { get; set; }
@@ -26,5 +26,9 @@ namespace DomainAPI.Dto.Airport
         public string elevation { get; set; }
         [JsonPropertyName("icao")]
         public string icao { get; set; }
+        [JsonPropertyName("city")]
+        public string city { get; set; }
+        [JsonPropertyName("state")]
+        public string state { get; set; }
     }
 }

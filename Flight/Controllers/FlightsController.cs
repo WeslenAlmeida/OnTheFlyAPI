@@ -126,7 +126,7 @@ namespace Flight.Controllers
 
             await _flightsServices.UpdateAsync(id, flightIn);
 
-            return CreatedAtRoute("GetFlight", new { id = flight.Id }, flight);
+            return CreatedAtRoute("GetFlight", new { id = flight.Id }, flightIn);
         }
     }
 }

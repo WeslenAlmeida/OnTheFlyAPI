@@ -41,11 +41,11 @@ namespace Airport.Controllers
         {
             var airport = await _airportsServices.GetOneIataAsync(iata);
 
-            //if (airport == null)
-            //{
-            //    airport = await _airportsServices.GetAirportWEBAPIAsync(iata);
-            //    await _airportsServices.CreateAirportAsync(airport);
-            //}
+            if (airport == null)
+            {
+                airport = await _airportsServices.GetAirportWEBAPIAsync(iata);
+                await _airportsServices.CreateAirportAsync(airport);
+            }
 
             if (airport == null)
             {

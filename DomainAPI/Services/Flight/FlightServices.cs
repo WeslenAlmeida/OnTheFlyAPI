@@ -102,7 +102,10 @@ namespace DomainAPI.Services.Flight
         public async Task<IActionResult> PutDateAircraftAPIAsync(string rab)
         {
             var httpclient = new HttpClient();
-            var airportresponse = await httpclient.GetAsync(FlightUtils.GetAPIUri("ApiPutAircrafUri") + rab);
+            //var airportresponse = await httpclient.GetAsync(FlightUtils.GetAPIUri("ApiPutAircrafUri") + rab);
+            var airportresponse = await httpclient.GetAsync("https://localhost:44375/api/Aircraft/UpdateFlight/PT-LLL");
+
+
             var JsonString = await airportresponse.Content.ReadAsStringAsync();
             dynamic result = JsonConvert.DeserializeObject(JsonString);
             return result;
