@@ -23,12 +23,14 @@ namespace DomainAPI.Services.Airport
             _airportsTrashServices = database.GetCollection<Airports>(settings.AirportsTrashCollectionName);
         }
 
+        //Insere um aeroporto na collection Airports
         public async Task<Airports> CreateAirportAsync(Airports airport)
         {
             await _airportsServices.InsertOneAsync(airport);
             return airport;
         }
 
+        //Insere um aeroporto na collection de apagados
         public async Task<Airports> CreateTrashAsync(Airports airportIn)
         {
             var airportdeleted = await _airportsTrashServices.Find(airport => airport.IATA.ToUpper() == airportIn.IATA.ToUpper()).FirstOrDefaultAsync();
@@ -54,7 +56,7 @@ namespace DomainAPI.Services.Airport
 
         public async Task RemoveOneAsync(Airports airportRemove) => await _airportsServices.DeleteOneAsync(airport => airport.Id == airportRemove.Id);
 
-
+        //Busca um aeroporto na AirportAPI pela IATA
         public async Task<Airports> GetAirportWEBAPIAsync(string iata)
         {
             var httpclient = new HttpClient();
