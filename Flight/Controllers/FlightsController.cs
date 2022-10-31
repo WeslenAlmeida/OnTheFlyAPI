@@ -124,9 +124,9 @@ namespace Flight.Controllers
                 return NotFound();
             }
 
-            await _flightsServices.UpdateAsync(id, flight);
+            await _flightsServices.UpdateAsync(id, flightIn);
 
-            return CreatedAtRoute("GetFlight", new { id = flight.Id }, flight);
+            return CreatedAtRoute("GetFlight", new { id = flight.Id }, flightIn);
         }
     }
 }
