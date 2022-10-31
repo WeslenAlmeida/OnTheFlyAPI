@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DomainAPI.Dto.Company
 {
-    public class CompanyDto
+    public class CompanyDto // Classe necessário para criar um objeto e associar a aeronave
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

@@ -22,12 +22,15 @@ namespace Aircraft.Controllers
             _deadfileAircraftServices = deadfileAircraftServices;
         }
 
+        //Endpoint get para obter todas aeronaves cadastradas
         [HttpGet]
         public async Task<ActionResult<List<Aircrafts>>> Get() => await _aircraftServices.Get();
 
+        //Endpoint get para obter uma aeronave especifica pelo RAB
         [HttpGet("{rab}", Name = "GetAircraft")]
         public async Task<ActionResult<Aircrafts>> Get(string rab) => await _aircraftServices.Get(rab);
 
+        //Endpoint de criar Aeronave e vincular com a companhia responsável.
         [HttpPost("{cnpjIn}")]
         public async Task<ActionResult<Aircrafts>> Create(string cnpjIn, AircraftDto aircraftIn)
         {
@@ -52,7 +55,7 @@ namespace Aircraft.Controllers
             {
                 var aircraft = new Aircrafts()
                 {
-                    RAB = aircraftIn.RAB,
+                    RAB = rab,
                     Capacity = aircraftIn.Capacity,
                     DtRegistry = DateTime.Now,
                     DtLastFlight = DateTime.Now,
@@ -67,6 +70,7 @@ namespace Aircraft.Controllers
             return BadRequest("Já existe uma Aeronave cadastrada com está inscrição!");
         }
 
+        //Endpoint de atualizar data do ultimo voo
         [HttpPut("UpdateFlight/{rabIn}")]
         public async Task<IActionResult> Put(string rabIn)
         {
@@ -83,6 +87,7 @@ namespace Aircraft.Controllers
             return NoContent();
         }
 
+        //Endpoint de atualizar a capacidade da aeronave
         [HttpPut("UpdateCapacity/{rabIn}/{capacity}")]
         public async Task<IActionResult> PutCapacity(string rabIn, int capacity)
         {
@@ -99,6 +104,7 @@ namespace Aircraft.Controllers
             return NoContent();
         }
 
+        //Endpoint de remover companhia
         [HttpDelete]
         public async Task<IActionResult> Remove(string rabIn)
         {
@@ -119,6 +125,7 @@ namespace Aircraft.Controllers
             return NoContent();
         }
 
+        //Método de validação de cnpj
         public static bool IsCnpj(string cnpj)
         {
             int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };

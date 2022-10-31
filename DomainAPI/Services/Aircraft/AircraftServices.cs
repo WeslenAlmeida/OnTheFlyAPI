@@ -31,6 +31,7 @@ namespace DomainAPI.Services.Aircraft
 
         public async Task Remove(string rab) => await _aircraft.DeleteOneAsync(Aircraft => Aircraft.RAB == rab);
 
+        //Chamada do endpoint para obter um objeto companhia, passando como parametro o cnpj da mesma. 
         public async Task<Companys> GetCompany(string cnpj)
         {
             CompanyDto companyDto;
@@ -40,8 +41,10 @@ namespace DomainAPI.Services.Aircraft
 
                 var companyJson = await response.Content.ReadAsStringAsync();
 
+                //se o retorno do método for verdadeiro, significa que o objeto foi localizado
                 if (response.IsSuccessStatusCode)
                 {
+                    //Desserialização para transformar o retorno em objeto.
                     companyDto = JsonConvert.DeserializeObject<CompanyDto>(companyJson);
 
                     var company = new Companys()
@@ -63,7 +66,7 @@ namespace DomainAPI.Services.Aircraft
                         }
                     };
 
-                    return company;
+                    return company; // retorna uma companhia.
                 }
                 return null;
             }

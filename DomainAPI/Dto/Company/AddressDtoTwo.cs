@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DomainAPI.Dto.Company
 {
-    public class AddressDtoTwo
+    public class AddressDtoTwo // Classe necessária para criação de um endereço
     {
         [Required]
         [StringLength(9)]

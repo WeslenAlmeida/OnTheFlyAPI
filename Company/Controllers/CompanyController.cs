@@ -24,9 +24,11 @@ namespace Company.Controllers
             _addressServives = addressSerives;
         }
 
+        //Endpoint para obter todas companhias cadastradas
         [HttpGet]
         public async Task<ActionResult<List<Companys>>> Get() => await _companyServices.Get();
 
+        //Endpoint para obter uma companhia especifica
         [HttpGet("{cnpjIn}")]
         public async Task<ActionResult<Companys>> Get(string cnpjIn)
         {
@@ -39,6 +41,7 @@ namespace Company.Controllers
             return company;
         }
 
+        //Endpoint para criar uma companhia, fazendo a busca do end. por requisição do via-cep
         [HttpPost]
         public async Task<ActionResult<Companys>> Create(CompanyDtoTwo company)
         {            
@@ -87,6 +90,7 @@ namespace Company.Controllers
             return BadRequest("Companhia já possue cadastro!");
         }
 
+        //Altera o status da companhia para false, afim de deixa-la restrita
         [HttpPut("Status/{cnpjIn}")]
         public async Task<IActionResult> PutStatus(string cnpjIn)
         {
@@ -105,6 +109,7 @@ namespace Company.Controllers
             return Ok();
         }
 
+        //endpoint para alterar endereço completo da companhia
         [HttpPut("Cep/{cnpjIn}/{cep}")]
         public async Task<IActionResult> PutCep(string cnpjIn, string cep)
         {
@@ -126,6 +131,7 @@ namespace Company.Controllers
             return Ok();
         }
 
+        //endpoint para alteração do numero do endereço
         [HttpPut("Numero/{cnpjIn}/{numero}")]
         public async Task<IActionResult> PutNumber(string cnpjIn, int numero)
         {
@@ -142,6 +148,7 @@ namespace Company.Controllers
             return Ok();
         }
 
+        //endpoint para alteração do complemento.
         [HttpPut("Complemento/{cnpjIn}/{complemento}")]
         public async Task<IActionResult> PutComplement(string cnpjIn, string complemento)
         {
@@ -158,6 +165,7 @@ namespace Company.Controllers
             return Ok();
         }
 
+        //endpoint para deletar uma companhia Aerea e criação do arquivo morto pós o delete.
         [HttpDelete("{cnpjIn}")]
         public async Task Remove(string cnpjIn)
         {
@@ -176,6 +184,7 @@ namespace Company.Controllers
             await _companyServices.Remove(cnpj);
         }
 
+        //Método de validação de cnpj
         public static bool IsCnpj(string cnpj)
         {
             int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };

@@ -15,6 +15,7 @@ namespace DomainAPI.Services.Company
         {
         }
 
+        //Método que acessa o end point do via cep e retorna um objeto de endereço
         public async Task<CompanyAddress> GetAddress(string cep)
         {
             CompanyAddress address;
