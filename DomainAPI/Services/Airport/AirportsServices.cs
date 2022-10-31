@@ -3,8 +3,6 @@ using DomainAPI.Models.Airport;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DomainAPI.Services.Airport
@@ -30,7 +28,7 @@ namespace DomainAPI.Services.Airport
 
         public async Task<Airports> CreateTrashAsync(Airports airportIn)
         {
-            var airportdeleted = await _airportsTrashServices.Find(airport => airport.IATA == airportIn.IATA).FirstOrDefaultAsync();
+            var airportdeleted = await _airportsTrashServices.Find(airport => airport.IATA.ToUpper() == airportIn.IATA.ToUpper()).FirstOrDefaultAsync();
 
             if (airportdeleted == null)
             {
@@ -43,15 +41,24 @@ namespace DomainAPI.Services.Airport
 
         public async Task<List<Airports>> GetAllAsync() => await _airportsServices.Find(airport => true).ToListAsync();
 
+        public async Task<List<Airports>> GetByCityAsync(string city) => await _airportsServices.Find(airport => airport.City.ToUpper() == city.ToUpper()).ToListAsync();
+
         public async Task<List<Airports>> GetDeletedAsync() => await _airportsTrashServices.Find(airport => true).ToListAsync();
 
         public async Task<Airports> GetOneIataAsync(string iata) => await _airportsServices.Find(airport => airport.IATA.ToUpper() == iata.ToUpper()).FirstOrDefaultAsync();
-
-        public async Task<List<Airports>> GetOneCountryAsync(string country) => await _airportsServices.Find(airport => airport.Country.ToUpper() == country.ToUpper()).ToListAsync();
 
         public async Task UpdateAsync(string iata, Airports airportIn) => await _airportsServices.ReplaceOneAsync(airport => airport.IATA.ToUpper() == iata.ToUpper(), airportIn);
 
         public async Task RemoveOneAsync(Airports airportRemove) => await _airportsServices.DeleteOneAsync(airport => airport.Id == airportRemove.Id);
 
+
+        //public async Task<Airports> GetAirportWEBAPIAsync(string iata)
+        //{
+        //    var httpclient = new HttpClient();
+        //    var airportresponse = await httpclient.GetAsync(AirportUtils.GetAPIUri("WebApiGetAirportUri") + iata);
+        //    var JsonString = await airportresponse.Content.ReadAsStringAsync();
+        //    var airport = JsonConvert.DeserializeObject<AirportsDto>(JsonString);
+        //    return airport;
+        //}
     }
 }

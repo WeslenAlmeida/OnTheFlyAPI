@@ -27,13 +27,13 @@ namespace Airport.Controllers
                 await _airportsServices.CreateAirportAsync(airportIn);
                 return CreatedAtRoute("GetAirport", new { id = airportIn.IATA }, airportIn);
             }
-            return Conflict();
+            return Ok(airport);
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Airports>>> GetAllAsync() => await _airportsServices.GetAllAsync();
 
-        [HttpGet("deleted")]
+        [HttpGet("AllDeleted")]
         public async Task<ActionResult<List<Airports>>> GetDeletedAsync() => await _airportsServices.GetDeletedAsync();
 
         [HttpGet("{iata:length(3)}", Name = "GetAirport")]
@@ -41,26 +41,20 @@ namespace Airport.Controllers
         {
             var airport = await _airportsServices.GetOneIataAsync(iata);
 
+            //if (airport == null)
+            //{
+            //    airport = await _airportsServices.GetAirportWEBAPIAsync(iata);
+            //    await _airportsServices.CreateAirportAsync(airport);
+            //}
+
             if (airport == null)
             {
-                return NotFound();
+                return NotFound("Aeroporto não encontrado!");
             }
 
             return Ok(airport);
         }
 
-        [HttpGet("{country:length(2)}")]
-        public async Task<ActionResult<List<Airports>>> GetOneCountryAsync(string country)
-        {
-            var airport = await _airportsServices.GetOneCountryAsync(country);
-
-            if (airport == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(airport);
-        }
 
         [HttpPut]
         public async Task<ActionResult<Airports>> UpdateAsync(string iata, Airports airportIn)

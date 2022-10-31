@@ -1,11 +1,14 @@
-﻿using DomainAPI.Models.Aircraft;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 
 namespace DomainAPI.Utils.FlightUtils
 {
     public abstract class FlightUtils
     {
+        public static IConfigurationRoot Configuration { get; set; }
+
         public static bool DepartureValidator(DateTime departuredate)
         {
             if (DateTime.Compare(departuredate, System.DateTime.Now) > 0)
@@ -20,16 +23,14 @@ namespace DomainAPI.Utils.FlightUtils
             else return false;
         }
 
-        public static string GetAirportWEBAPIUri()
+        public static string GetAPIUri(string uriJsonName)
         {
-            dynamic JsonConfig = JsonConvert.DeserializeObject("appsettings.json");
-            return JsonConfig.DatabaseSettings.ApiWebAirportUri;
-        }
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-        public static string GetAirportAPIUri()
-        {
-            dynamic JsonConfig = JsonConvert.DeserializeObject("appsettings.json");
-            return JsonConfig.DatabaseSettings.ApiAirportUri;
+            Configuration = builder.Build();
+            return Configuration["DatabaseSettings:" + uriJsonName];
         }
     }
 }
