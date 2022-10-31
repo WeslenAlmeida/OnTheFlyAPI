@@ -128,7 +128,7 @@ namespace Passenger.Controllers
                     return BadRequest("Cadastro de Passageiro Não Encontrado!"); ;
                 } else {
 
-                   passenger.Status = false;//Json não aceita booleano precisa converter para string
+                   passenger.Status = false;
                   _passengerService.UpdateRestrict(PassengerUtil.MaskCPF(cpf), passenger);
                   _restrictService.CreateRestrict(passenger);
                 }
