@@ -104,6 +104,14 @@ namespace Aircraft.Controllers
             return NoContent();
         }
 
+        [HttpPut("UpdateCompany/")]
+        public async Task PutCompany(Aircrafts aircraft)
+        {
+            await _aircraftServices.Put(aircraft.RAB, aircraft);
+
+            return;
+        }
+
         //Endpoint de remover companhia
         [HttpDelete]
         public async Task<IActionResult> Remove(string rabIn)

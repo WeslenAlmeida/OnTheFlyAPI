@@ -1,7 +1,9 @@
 ﻿using DomainAPI.Dto.Company;
 using DomainAPI.Models.Company;
+using DomainAPI.Services.Aircraft;
 using DomainAPI.Services.Company;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,13 +17,15 @@ namespace Company.Controllers
         private readonly CompanyServices _companyServices;
         private readonly DeadfileCompanyServices _deadfilesServices;
         private readonly AddressServices _addressServives;
+        private readonly AircraftService _aircraftServices;
 
         public CompanyController(CompanyServices companyServices, DeadfileCompanyServices deadfilesServices, 
-            AddressServices addressSerives)
+            AddressServices addressSerives, AircraftService aircraftService)
         {
             _companyServices = companyServices;
             _deadfilesServices = deadfilesServices;
             _addressServives = addressSerives;
+            _aircraftServices = aircraftService;
         }
 
         //Endpoint para obter todas companhias cadastradas
@@ -125,8 +129,18 @@ namespace Company.Controllers
             companyIn.Address.Street = address.Street;
             companyIn.Address.City = address.City;
             companyIn.Address.State = address.State;
-
             await _companyServices.Put(cnpj, companyIn);
+
+            var listAircraft = await _aircraftServices.GetAircraft(cnpj);
+
+            foreach (var airctafft in listAircraft)
+            {
+                if (airctafft.Company.CNPJ == cnpj)
+                {
+                    airctafft.Company = companyIn;
+                    await _aircraftServices.UpdateAircraft(airctafft);
+                }
+            }
 
             return Ok();
         }
@@ -145,6 +159,17 @@ namespace Company.Controllers
 
             await _companyServices.Put(cnpj, companyIn);
 
+            var listAircraft = await _aircraftServices.GetAircraft(cnpj);
+
+            foreach (var airctafft in listAircraft)
+            {
+                if (airctafft.Company.CNPJ == cnpj)
+                {
+                    airctafft.Company = companyIn;
+                    await _aircraftServices.UpdateAircraft(airctafft);
+                }
+            }
+
             return Ok();
         }
 
@@ -161,6 +186,17 @@ namespace Company.Controllers
             companyIn.Address.Complement = complemento;
 
             await _companyServices.Put(cnpj, companyIn);
+
+            var listAircraft = await _aircraftServices.GetAircraft(cnpj);
+
+            foreach (var airctafft in listAircraft)
+            {
+                if (airctafft.Company.CNPJ == cnpj)
+                {
+                    airctafft.Company = companyIn;
+                    await _aircraftServices.UpdateAircraft(airctafft);
+                }
+            }
 
             return Ok();
         }

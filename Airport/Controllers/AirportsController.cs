@@ -17,6 +17,7 @@ namespace Airport.Controllers
             _airportsServices = airportsServices;
         }
 
+        //Insere um aeroporto na collection Airports
         [HttpPost]
         public async Task<ActionResult<Airports>> CreateAirportAsync(Airports airportIn)
         {
@@ -44,14 +45,16 @@ namespace Airport.Controllers
             if (airport == null)
             {
                 airport = await _airportsServices.GetAirportWEBAPIAsync(iata);
-                await _airportsServices.CreateAirportAsync(airport);
+                if (airport == null)
+                {
+                    return NotFound("Aeroporto não encontrado!");
+                }
+                else
+                {
+                    await _airportsServices.CreateAirportAsync(airport);
+                    return Ok(airport);
+                }
             }
-
-            if (airport == null)
-            {
-                return NotFound("Aeroporto não encontrado!");
-            }
-
             return Ok(airport);
         }
 
@@ -71,6 +74,7 @@ namespace Airport.Controllers
             return CreatedAtRoute("GetAirport", new { id = airportIn.IATA }, airportIn);
         }
 
+        //Insere um aeroporto na collection de apagados e remove da Collection Airports
         [HttpDelete]
         public async Task<ActionResult> RemoveOneAsync(string iata)
         {

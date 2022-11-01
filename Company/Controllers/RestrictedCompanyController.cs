@@ -11,11 +11,13 @@ namespace Company.Controllers
     {
         private readonly RestrictedCompanyServices _restrictedCompanyServices;
         private readonly CompanyServices _companyServices;
+        private readonly AircraftService _aircraftServices;
 
-        public RestrictedCompanyController(RestrictedCompanyServices restrictedCompanyServices, CompanyServices companyServices)
+        public RestrictedCompanyController(RestrictedCompanyServices restrictedCompanyServices, CompanyServices companyServices, AircraftService aircraftService)
         {
             _restrictedCompanyServices = restrictedCompanyServices;
             _companyServices = companyServices;
+            _aircraftServices = aircraftService;
         }
 
         //Endpoint para obter todas companhias restritas cadastradas
@@ -46,6 +48,17 @@ namespace Company.Controllers
             }
 
             await _companyServices.Put(cnpj, company);
+
+            var listAircraft = await _aircraftServices.GetAircraft(cnpj);
+
+            foreach (var airctafft in listAircraft)
+            {
+                if(airctafft.Company.CNPJ == cnpj)
+                {
+                    airctafft.Company = company;
+                    await _aircraftServices.UpdateAircraft(airctafft);
+                }
+            }            
 
             await _restrictedCompanyServices.Create(restrict);
 
@@ -80,6 +93,17 @@ namespace Company.Controllers
             if (company is not null) company.Status = true;
                        
             await _companyServices.Put(cnpj, company);
+
+            var listAircraft = await _aircraftServices.GetAircraft(cnpj);
+
+            foreach (var airctafft in listAircraft)
+            {
+                if (airctafft.Company.CNPJ == cnpj)
+                {
+                    airctafft.Company = company;
+                    await _aircraftServices.UpdateAircraft(airctafft);
+                }
+            }
 
             await _restrictedCompanyServices.Remove(cnpj);
 

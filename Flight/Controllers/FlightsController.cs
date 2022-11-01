@@ -28,6 +28,8 @@ namespace Flight.Controllers
 
             if (destiny == null) return NotFound("Aeroporto não encontrado!");
 
+            if (destiny.Country == null) return BadRequest("Não foi possível carregar informação do País de destino!");
+
             if (destiny.Country.ToUpper() != "BR") return BadRequest("Só é possível voo Nacional!");
 
             var plane = await _flightsServices.GetAircraftAPIAsync(flightDto.Rab);
@@ -40,9 +42,11 @@ namespace Flight.Controllers
 
             if (FlightUtils.DateOpenCompanyValidator(plane.Company.DtOpen) == false) return BadRequest("Companhia com data de criação menor que 6 meses!");
 
-            if (_flightsServices.GetOneAsync(flightDto.Departure, plane.RAB) == null) return BadRequest("Aeronave já possui voo nesse dia!");
+            var flightday = await _flightsServices.GetOneAsync(flightDto.Departure, plane.RAB);
 
-            await _flightsServices.PutDateAircraftAPIAsync(flightDto.Rab);
+            if (flightday != null) return BadRequest("Aeronave já possui voo nesse dia!");
+
+            if (await _flightsServices.PutDateAircraftAPIAsync(flightDto.Rab) == false) return BadRequest("Não foi possível alterar atributo Data Último Voo da aeronave!");
 
             var flight = new Flights()
             {
@@ -62,9 +66,11 @@ namespace Flight.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Flights>>> GetAllAsync() => await _flightsServices.GetAllAsync();
 
+        //Filtra pela data do voo e retorna uma lista de voos ativos
         [HttpGet("Date/{date}")]
         public async Task<ActionResult<List<Flights>>> GetByDateAsync(DateTime date) => await _flightsServices.GetByDateAsync(date);
 
+        //Filtra por intervalo de data e retorna uma lista de voos ativos
         [HttpGet("ByDateRange/{initialdate}/{finaldate}")]
         public async Task<ActionResult<List<Flights>>> GetByDateRangeAsync(DateTime initialdate, DateTime finaldate) => await _flightsServices.GetByDateRangeAsync(initialdate, finaldate);
 
@@ -81,7 +87,7 @@ namespace Flight.Controllers
             return cliente;
         }
 
-
+        //Filtra um voo pela data e aeronave
         [HttpGet("GetOneFlight/{date}/{rab:length(6)}")]
         public async Task<ActionResult<Flights>> GetOneAsync(DateTime date, string rab)
         {

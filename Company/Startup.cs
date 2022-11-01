@@ -38,6 +38,7 @@ namespace Company
             services.AddSingleton<RestrictedCompanyServices>();
             services.AddSingleton<DeadfileCompanyServices>();
             services.AddSingleton<AddressServices>();
+            services.AddSingleton<AircraftService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
