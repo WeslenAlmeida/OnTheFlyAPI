@@ -27,8 +27,17 @@ namespace DomainAPI.Services.Sale
 
         public List<Sales> Get() => _sales.Find(sales => true).ToList();
 
+        //public Sales GetSpecificSale(Passengers passenger) =>
+        //   _sales.Find<Sales>(sales => sales.Passengers.Contains(passenger)).FirstOrDefault();
+
+
         public Sales GetSpecificSale(Passengers passenger, DateTime date, string rab) =>
             _sales.Find<Sales>(sales => sales.Flight.Plane.RAB == rab && sales.Flight.Departure == date && sales.Passengers.Contains(passenger)).FirstOrDefault();
 
+        //public void Update(string fligthId, string cpf, Sales salesIn) =>
+        //    _sales.ReplaceOne(sales => sales.Flight.Id == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)), salesIn);
+
+        //public void Remove(string fligthId, string cpf) =>
+        //   _sales.DeleteOne(sales => sales.Flight.Id == fligthId && sales.Passengers.Exists(passenger => passenger.Cpf.Contains(cpf)));
     }
 }

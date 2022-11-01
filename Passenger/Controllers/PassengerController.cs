@@ -27,11 +27,10 @@ namespace Passenger.Controllers
 
 
         }
-        //Procura no Get() de forma geral todos passageiros Cadastrados 
+
         [HttpGet("Records", Name = "GetAll")]
         public ActionResult<List<Passengers>> Get() => _passengerService.Get();
 
-        //Procura no Get passando o cpf e verifica se existe passageiro Cadastrado
         [HttpGet("Registration/Cpf", Name = "GetPassenger")]
         public async Task<ActionResult<Passengers>> GetPassenger(string cpf) {
 
@@ -48,7 +47,7 @@ namespace Passenger.Controllers
                 return BadRequest("CPF Informado Não é valido!");
             }
         }
-        //Procura no Get passando o cpf e verifica se existe passageiro Cadastrado se não existir ele cadastra
+
         [HttpPost("Register", Name = "PassengerRegister")]
         public async Task<ActionResult<Passengers>> CreateDTOAsync(PassengerDTO passengerDTO) {
 
@@ -80,7 +79,6 @@ namespace Passenger.Controllers
             }
         }
 
-        //Procura se existe Passageiro e altera os campos 
         [HttpPut("Alter/Registration", Name = "AlterPassenger")]
         public async Task<ActionResult> UpdateAsync(string cpf, PassengerUpdateDTO passengerIn) {
 
@@ -100,7 +98,7 @@ namespace Passenger.Controllers
             }
         }
 
-        //Procura se existe o passageiro cadastro e remove ele passando o cpf
+
         [HttpDelete("Remove/cpf", Name = "RemovePassenger")]
         public async Task<ActionResult> DeleteAsync(string cpf) {
 
@@ -121,7 +119,6 @@ namespace Passenger.Controllers
             }
         }
 
-        //Procura o passageiro e se exixtir muda o status para False manda para o banco de restrito tambem
         [HttpGet("Restrict/cpf", Name = "GetPassengerRestrict")]
         public async Task<ActionResult> RestrictPassengerAsync(string cpf) {
 
@@ -141,7 +138,6 @@ namespace Passenger.Controllers
             }
         }
 
-        //Procura o passageiro e se exixtir muda o status para True  e remove o cadastro em restrito
         [HttpDelete("Remove/Restrict/cpf", Name = "RemoveRestrictPassenger")]
         public async Task<ActionResult> RemoveRestrictAsync(string cpf) {
 
@@ -164,7 +160,6 @@ namespace Passenger.Controllers
             }
         }
 
-        //Procura só cadastro de passageiros com status True
         [HttpGet("StatusValids/Cpf", Name = "GetValidsPassenger")]
         public async Task<ActionResult<Passengers>> ValidPassengers(string cpf) {
             if (PassengerUtil.ValidateCpf(cpf) == true) {

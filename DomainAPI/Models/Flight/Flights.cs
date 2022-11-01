@@ -26,8 +26,5 @@ namespace DomainAPI.Models.Flight
 
         [Required]
         public bool Status { get; set; }
-       
     }
-
-    
 }
