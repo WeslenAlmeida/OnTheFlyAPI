@@ -46,7 +46,7 @@ namespace Flight.Controllers
 
             if (flightday != null) return BadRequest("Aeronave já possui voo nesse dia!");
 
-            if (await _flightsServices.PutDateAircraftAPIAsync(flightDto.Rab) == false) return BadRequest("Não foi possível alterar atributo Data Último Voo da aeronave!");
+            //if (await _flightsServices.PutDateAircraftAPIAsync(flightDto.Rab) == false) return BadRequest("Não foi possível alterar atributo Data Último Voo da aeronave!");
 
             var flight = new Flights()
             {

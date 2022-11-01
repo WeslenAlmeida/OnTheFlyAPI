@@ -24,10 +24,12 @@ namespace Saler.Controllers {
             _salesService = salesServices;
         }
 
+
+        
         [HttpGet]
         public ActionResult<List<Sales>> Get() => _salesService.Get();
 
-
+       
         [HttpPost("Sold/cpf")]
         public ActionResult<Sales> CreateSold(string cpf, DateTime date, string rab) {
           
@@ -52,7 +54,7 @@ namespace Saler.Controllers {
                     }
                 }
             }
-          
+            
             var fligth = new ConsumerController().GetFlightAsync(date, rab);
             sl.Flight = fligth.Result;
             if (sl.Flight.Departure == date && sl.Flight.Plane.RAB.Equals(rab)) {
@@ -95,6 +97,7 @@ namespace Saler.Controllers {
                 }
                 else
                 {
+                    //date.ToString("yyyy/MM/ddZ");
                     peoples.Add(passenger.Result);
                     var sale = _salesService.GetSpecificSale(passenger.Result, date, rab);
                     if (sale == null)
